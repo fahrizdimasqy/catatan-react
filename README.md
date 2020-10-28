@@ -29,5 +29,6 @@ class StateFullComponent extends React.Component {
 
 export default StateFullComponent;
 ```
-
 *
+
+perbedaan lainya adalah ketika kita memiliki nilai yang nantinya berubah-ubah maka gunakan statefull untul merender kembali nilai pada komponent sedangkan stateles untuk komponen yang nilainya tidak beruab
