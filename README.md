@@ -294,3 +294,7 @@ serviceWorker.unregister();
 ### LifeCycle Component
 ### 1. Mounting ###
 Ketika komponent itu dipasang
+### 2. Updating ###
+Ketika Komponent itu update
+### 3. UnMounting ###
+Ketika komponen itu dicopot atau dihilang di page kita
