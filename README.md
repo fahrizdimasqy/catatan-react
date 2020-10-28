@@ -102,9 +102,9 @@ membuat component product dan fungsi untuk menghandle perubahan data jumlah maup
 
 
 * Home.jsx
+```javascript
 import React, { Component } from 'react';
 import YoutubeComponent from '../../component/YoutubeComponent/YoutubeComponent';
-```javascript
 import Product from '../Product/Product';
 
 class Home extends Component {
