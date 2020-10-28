@@ -294,6 +294,7 @@ serviceWorker.unregister();
 ### LifeCycle Component
 ### 1. Mounting ###
 Ketika komponent itu dipasang
+Mounting > Constructor > getDerivedFromprops > componentDidMount
 ### 2. Updating ###
 Ketika Komponent itu update
 ### 3. UnMounting ###
