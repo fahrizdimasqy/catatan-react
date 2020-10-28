@@ -291,3 +291,6 @@ ReactDOM.render(<Home />, document.getElementById('root'));
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 ```
+### LifeCycle Component
+### 1. Mounting ###
+Ketika komponent itu dipasang
