@@ -143,3 +143,5 @@ serviceWorker.unregister();
 ```
 
 lalu di panggil home.js ke index.js agar bisa tampil pada browser
+
+### Update Parent Component oleh Child Component ###
