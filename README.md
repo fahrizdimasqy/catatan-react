@@ -299,3 +299,81 @@ Mounting > Constructor > getDerivedFromprops > componentDidMount
 Ketika Komponent itu update
 ### 3. UnMounting ###
 Ketika komponen itu dicopot atau dihilang di page kita
+
+* LifeCycleComp.jsx
+```javascript
+import React, { Component } from 'react';
+
+class LifeCycleComp extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 1
+        }
+        console.log('constructor')
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        console.log('komponen getDerivedStateFromProps')
+        return null;
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount')
+        // untuk mengupdate state
+        setTimeout(() => {
+            this.setState({
+                count: 2
+            })
+        }, 3000)
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('shouldComponentUpdate')
+        return true; // ketika state di update maka function ini harus di return true
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log('getSnapshotBeforeUpdate')
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('komponenDidUpdate')
+    }
+
+    componentWillUnmount() {
+        console.log('componentWillUnmount')
+    }
+
+    render() {
+        console.log('render')
+        return (
+            <button className="btn btn-primary ml-2">Component Button {this.state.count}</button>
+        );
+    }
+}
+
+export default LifeCycleComp;
+//hasilnya 2
+```
+
+* Home.jsx
+```javascript
+import React, { Component } from 'react';
+import YoutubeComponent from '../../component/YoutubeComponent/YoutubeComponent';
+import LifeCycleComp from '../LifeCycleComp/LifeCycleComp';
+import Product from '../Product/Product';
+
+class Home extends Component {
+    render() {
+        return (
+            <div>
+                {/* <Product></Product> */}
+                <LifeCycleComp />
+            </div>
+        )
+    }
+}
+
+export default Home;
+```
