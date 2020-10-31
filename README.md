@@ -377,3 +377,101 @@ class Home extends Component {
 
 export default Home;
 ```
+
+### LifeCycle part 2 ###
+* LifeCylceComp.jsx
+```javascript
+import React, { Component } from 'react';
+
+class LifeCycleComp extends Component {
+    constructor(props) { // contructor akan di tampilkan pertama
+        super(props);
+        this.state = {
+            count: 1 // yang pertama tampil di page
+        }
+        console.log('constructor')
+    }
+
+    static getDerivedStateFromProps(props, state) { // life cycle kedua yang ditampilkan
+        console.log('komponen getDerivedStateFromProps')
+        return null;
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount')
+        // untuk mengupdate state
+        setTimeout(() => {
+            this.setState({
+                count: 2
+            })
+        }, 5000)
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('shouldComponentUpdate')
+        return true;
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log('getSnapshotBeforeUpdate')
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('komponenDidUpdate')
+    }
+
+    componentWillUnmount() {
+        console.log('componentWillUnmount')
+    }
+
+    render() {
+        console.log('render')
+        return (
+            <button className="btn btn-primary ml-2">Component Button {this.state.count}</button>
+        );
+    }
+}
+
+export default LifeCycleComp;
+```
+
+* Home.jsx
+```javascript
+import React, { Component } from 'react';
+import YoutubeComponent from '../../component/YoutubeComponent/YoutubeComponent';
+import LifeCycleComp from '../LifeCycleComp/LifeCycleComp';
+import Product from '../Product/Product';
+
+class Home extends Component {
+
+    state = {
+        showComponent: true
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                showComponent: false
+            })
+        }, 15000) // setelah 15 detik component ini akan dihilangkan
+    }
+
+    render() {
+        return (
+            <div>
+
+                {
+                    this.state.showComponent
+                        ?
+                        <LifeCycleComp />
+                        : null
+                }
+            </div>
+
+        )
+    }
+}
+
+export default Home;
+```
