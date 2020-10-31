@@ -475,3 +475,4 @@ class Home extends Component {
 
 export default Home;
 ```
+> hasil: dipanggil component constructor dengan nilai sebelumnya yaitu 1 lalu ditampilkan, lalu component componentDidMount diberi perintah untuk mengupdate state jadi 2 setelah dipasang dan mendapatkan nilai props/state sebelumnya yang di ubah melalu component componentDidMount, lalu shouldComponentUpdate menanyakan apakah ada nilai yang diubah jika ya return nilainya jadi true maka setelah 5 detik akan ditampilkan component dengan nilai yang telah diupdate lalu akan ditampilkan nilai yang telah di update kedalam page dan component, lalu mengexsekusu componentDidUpdate sudah di update, dan setelah 15 detik componen hilang componentWillUnmount
