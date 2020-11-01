@@ -476,3 +476,119 @@ class Home extends Component {
 export default Home;
 ```
 > hasil: dipanggil component constructor dengan nilai sebelumnya yaitu 1 lalu ditampilkan, lalu component componentDidMount diberi perintah untuk mengupdate state jadi 2 setelah dipasang dan mendapatkan nilai props/state sebelumnya yang di ubah melalu component componentDidMount, lalu shouldComponentUpdate menanyakan apakah ada nilai yang diubah jika ya return nilainya jadi true maka setelah 5 detik akan ditampilkan component dengan nilai yang telah diupdate lalu akan ditampilkan nilai yang telah di update kedalam page dan component, lalu mengexsekusu componentDidUpdate sudah di update, dan setelah 15 detik componen hilang componentWillUnmount
+
+### studi kasus LifeCycle ###
+* LifeCycleComp.jsx
+```javascript
+import React, { Component } from 'react';
+
+class LifeCycleComp extends Component {
+    constructor(props) { // contructor akan di tampilkan pertama
+        super(props);
+        this.state = {
+            count: 1 // yang pertama tampil di page
+        }
+        console.log('constructor')
+    }
+
+    static getDerivedStateFromProps(props, state) { // life cycle kedua yang ditampilkan
+        console.log('komponen getDerivedStateFromProps')
+        return null;
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount')
+        // // untuk mengupdate state
+        // setTimeout(() => {
+        //     this.setState({
+        //         count: 2
+        //     })
+        // }, 5000)
+    }
+    // arti component ini adalah haruskan komponen ini harus diupdate
+    // kalau tidak perlu dia akan memanggil lifeCycle lainya keluar dan selesai
+    shouldComponentUpdate(nextProps, nextState) { // dua parameter ini bisa mencegah componen kita di update
+        console.group('shouldComponentUpdate')
+        // console.log('shouldComponentUpdate')
+        // console.log(nextProps);
+        console.log('next state', nextState);
+        console.log('this state', this.state)
+        console.groupEnd();
+        if (nextState.count >= 4) { // ketika count bernilai 4/ lebih besar maka tidak akan d update
+            return false
+        }
+        return true;
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log('getSnapshotBeforeUpdate')
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('komponenDidUpdate')
+    }
+
+    componentWillUnmount() {
+        console.log('componentWillUnmount')
+    }
+
+    // method ini akan menjalankan menambah countnya jadi nilai count sebelumnya ditambah count + 1
+    changeCount = () => {
+        this.setState({
+            count: this.state.count + 1
+        })
+    }
+
+    render() {
+        console.log('render')
+        return (
+            <button className="btn btn-primary ml-2" onClick={this.changeCount}>Component Button {this.state.count}</button> //ketika buttonnya diklick maka buttin akan memanggil method yang telah dibuat dengan nama changeCount
+        );
+    }
+}
+
+export default LifeCycleComp;
+```
+
+* Home.jsx
+```javascript
+import React, { Component } from 'react';
+import YoutubeComponent from '../../component/YoutubeComponent/YoutubeComponent';
+import LifeCycleComp from '../LifeCycleComp/LifeCycleComp';
+import Product from '../Product/Product';
+
+class Home extends Component {
+
+    state = {
+        showComponent: true
+    }
+
+    componentDidMount() {
+        // setTimeout(() => {
+        //     this.setState({
+        //         showComponent: false
+        //     })
+        // }, 15000) // setelah 15 detik component ini akan dihilangkan
+    }
+
+    render() {
+        return (
+            <div>
+
+                {
+                    this.state.showComponent
+                        ?
+                        <LifeCycleComp />
+                        : null
+                }
+            </div>
+
+        )
+    }
+}
+
+export default Home;
+```
+
+> kesimpulan 1. mounting (pemasangan) didalam mounting ini kita memiliki beberapa lifecycle yaitu: (constructor,getDerivedStateFromProps,rende, componentDidMount) 2. updating memiliki lifecycle(getDerivedStateFromProps, shouldComponentUpdate, render, getSnapshotBeforeUpdate, componentDidUpdate) 3. unmounting(pecopotan komponent) memiliki lifecycle(componentWillUnmount)
