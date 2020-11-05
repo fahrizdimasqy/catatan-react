@@ -690,3 +690,101 @@ class Home extends Component {
 
 export default Home;
 ```
+### Berinteraksi menggunakan axios
+* BlogPost.jsx
+```javascript
+import React, { Component, Fragment } from 'react';
+import Post from '../../component/Post/Post';
+import axios from 'axios';
+
+class BlogPost extends Component {
+    state = {
+        post: []
+    }
+
+    // ketika component dipasang
+    componentDidMount() {
+        // mengambil data ke server
+        axios.get('https://jsonplaceholder.typicode.com/posts')
+            .then((result) => {
+                console.log(result.data) //mengambil data pada api
+                this.setState({
+                    post: result.data // mengubah post dengan data yang ada di api
+                })
+            })
+    }
+
+    render() {
+        return (
+            <Fragment>
+                <div className="container">
+                    <h4>Blog Post</h4>
+                    <hr />
+                    {
+                        //melooping data state yang sudah memiliki data json
+                        this.state.post.map(post => {
+                            //lalu di return/mengembalikan nilai bersarkan key/name pada objek json
+                            return <Post key={post.id} no={post.id} title={post.title} p desc={post.body} />
+                        })
+                    }
+                </div>
+            </Fragment>
+        );
+    }
+}
+export default BlogPost;
+```
+
+* Post.jsx
+```javascript
+import React, { Fragment } from 'react';
+import './Post.css'
+const Post = (props) => {
+    return (
+        <Fragment>
+            <div className="card mb-3">
+                <div className="row no-gutters">
+                    <div className="col-md-4">
+                        <img src="https://images3.alphacoders.com/221/thumb-1920-221297.png" alt="" className="card-img" />
+                    </div>
+                    <div className="col-md-8">
+                        <div className="card-body">
+                            {/* memanggil props yang berisi data json dengan name no dan ditampilkan */}
+                            <p className="card-text">{props.no}</p>
+                            {/* memanggil props yang berisi data pada json dengan name title dan ditampilkan */}
+                            <h5 className="card-title">{props.title}</h5>
+                            {/* memanggil props yang berisi data pada json dengan name desc dan ditampilkan */}
+                            <p className="card-text">
+                                {props.desc}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Fragment>
+    )
+}
+export default Post;
+```
+
+* Home.jsx
+```javascript
+import React, { Component } from 'react';
+import YoutubeComponent from '../../component/YoutubeComponent/YoutubeComponent';
+import BlogPost from '../BlogPost/BlogPost';
+import LifeCycleComp from '../LifeCycleComp/LifeCycleComp';
+import Product from '../Product/Product';
+
+class Home extends Component {
+    render() {
+        return (
+            <div>
+                <BlogPost />
+            </div>
+
+        )
+    }
+}
+
+export default Home;
+```
