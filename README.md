@@ -788,3 +788,230 @@ class Home extends Component {
 
 export default Home;
 ```
+### Crud Menggunakan REACT Facke API
+
+* index.js
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import App from './App';
+import * as serviceWorker from './serviceWorker';
+import Home from './container/Home/Home';
+
+ReactDOM.render( < Home / > , document.getElementById('root'));
+
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
+```
+
+* Home.jsx
+```javascript
+import React, { Component, Fragment } from 'react';
+import YoutubeComponent from '../../component/YoutubeComponent/YoutubeComponent';
+import BlogPost from '../pages/BlogPost/BlogPost';
+import { BrowserRouter as Router, Switch, Route, Link, BrowserRouter } from "react-router-dom";
+import Product from '../pages/Product/Product';
+
+class Home extends Component {
+    render() {
+        return (
+            <BrowserRouter>
+                <div>
+                    <BlogPost />
+                </div>
+        )
+    }
+}
+
+
+
+export default Home;
+```
+
+* Post.jsx
+```javascript
+import React, { Fragment } from 'react';
+import './Post.css'
+const Post = (props) => {
+    return (
+        <Fragment>
+            <div className="card mb-3">
+                <div className="row no-gutters">
+                    <div className="col-md-4">
+                        <img src="https://images3.alphacoders.com/221/thumb-1920-221297.png" alt="" className="card-img" />
+                    </div>
+                    <div className="col-md-8">
+                        <div className="card-body">
+                            {/* memanggil props yang berisi data json dengan name id dan ditampilkan */}
+                            {/* <p className="card-text">{props.data.id}</p> */}
+                            {/* memanggil props data.yang berisi data pada json dengan name title dan ditampilkan */}
+                            <h5 className="card-title">{props.data.title}</h5>
+                            {/* memanggil props data.yang berisi data pada json dengan name body dan ditampilkan */}
+                            <p className="id-text">
+                                {props.data.body}
+                            </p>
+                            {/* memanggil props remove dan menerima parameter data json/api berdasarkan id */}
+                            <button className="btn btn-danger" onClick={() => { props.remove(props.data.id) }} >Remove</button>
+                            <button className="btn btn-warning ml-2 text-white" onClick={() => { props.update(props.data) }} >Update</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Fragment>
+    )
+}
+export default Post;
+```
+
+* BlogPost.jsx
+```javascript
+import React, { Component, Fragment } from 'react';
+import Post from '../../../component/Post/Post';
+import axios from 'axios';
+
+class BlogPost extends Component {
+    state = {
+        post: [],
+        formBlogPost: {
+            id: 1,
+            title: '',
+            body: '',
+            userId: 1
+        },
+        isUpdate: false
+    }
+
+    // method mengambil data dari server berupa json/api
+    getPostAPI = () => {
+        // mengambil data ke server
+        axios.get('http://localhost:3000/posts?_sort=id&_order=desc')
+            .then((result) => {
+                this.setState({
+                    post: result.data // mengubah post dengan data yang ada di api
+                })
+            })
+    }
+
+    postDataToApi = () => {
+        axios.post('http://localhost:3000/posts', this.state.formBlogPost).then((res) => {
+            console.log(res);
+            this.getPostAPI();
+            this.setState({
+
+            })
+        }, (err) => {
+            console.log('error:', err);
+        })
+    }
+
+    putDataToApi = () => {
+        axios.put(`http://localhost:3000/posts/${this.state.formBlogPost.id}`, this.state.formBlogPost).then((result) => {
+            this.getPostAPI();
+            console.log(result);
+            this.setState({
+                formBlogPost: {
+                    id: 1,
+                    title: '',
+                    body: '',
+                    userId: 1
+                },
+            })
+
+        })
+    }
+
+    // method untuk menghapus data
+    handleRemove = (data) => {
+        console.log(data)
+        axios.delete(`http://localhost:3000/posts/${data}`).then((result) => this.getPostAPI())
+        // memanggil fungsi getPost Api setelah fungsi delete berhasil
+    }
+
+    // method edit
+    handleUpdate = (data) => {
+        this.setState({
+            formBlogPost: data,
+            isUpdate: true
+        })
+    }
+
+    // method menghandle perubahan pada form
+    handleFormChange = (event) => {
+        // mengclonning data formblogPost di init state atau state awal
+        let formBlogPostNew = { ...this.state.formBlogPost };
+        // let title = event.target.value;
+        let timestamp = new Date().getTime();
+        if (!this.state.isUpdate) {
+            formBlogPostNew['id'] = timestamp; //membuat id dari nilai timestampid
+        }
+        formBlogPostNew[event.target.name] = event.target.value; // untuk merubah titlenya saja/bersarkan name / merubah secara spesifik contoh disini yaitu objek ke title dengan value baru
+        // event.target.name (event = adalah event yang dikirim) (name disni adalah nama yang di inisialisasikan dari input)
+        this.setState({
+            formBlogPost: formBlogPostNew //value pengganti formBlogPost
+        }) // setiap perubahan pada formBlogspot bisa di terima disini
+
+    }
+
+    // method mketika tombol save d klick
+    handleSubmit = () => {
+        if (this.state.isUpdate) {
+            this.putDataToApi();
+        } else {
+            this.postDataToApi();
+        }
+
+    }
+
+    // ketika component dipasang
+    componentDidMount() {
+        this.getPostAPI()
+        // komponen dipasang setelah melakukan penghapusan
+    }
+
+
+
+
+    render() {
+        return (
+            <Fragment>
+                <div className="container">
+                    <div className="card mb-5">
+                        <div className="card-header">Post</div>
+                        <div className="card-body">
+                            <form>
+                                <div className="form-group">
+                                    <label>Title</label>
+                                    <input type="text" className="form-control" name="title" onChange={this.handleFormChange} value={this.state.formBlogPost.title} />
+                                </div>
+                                <div className="form-group">
+                                    <label>Content</label>
+                                    <textarea type="text" className="form-control" name="body" onChange={this.handleFormChange} value={this.state.formBlogPost.body} />
+                                </div>
+                                <button className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    <h4>Blog Post</h4>
+                    <hr />
+                    {
+                        //melooping data state yang sudah memiliki data json
+                        this.state.post.map(post => {
+                            //lalu di return/mengembalikan nilai bersarkan key/name pada objek json
+
+                            // bisa di sederhanakan menjadi 1 props memanggil semua data post keseluruhan
+                            return <Post key={post.id} data={post} remove={this.handleRemove} update={this.handleUpdate} />
+                        })
+                    }
+                </div>
+            </Fragment>
+        );
+    }
+}
+export default BlogPost;
+```
