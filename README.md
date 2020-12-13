@@ -1015,3 +1015,48 @@ class BlogPost extends Component {
 }
 export default BlogPost;
 ```
+### React Router
+```bash
+npm install react-router-dom
+```
+
+* Home.jsx
+
+```javascript
+import React, { Component, Fragment } from 'react';
+import YoutubeComponent from '../../component/YoutubeComponent/YoutubeComponent';
+import BlogPost from '../pages/BlogPost/BlogPost';
+import { BrowserRouter as Router, Switch, Route, Link, BrowserRouter } from "react-router-dom";
+import Product from '../pages/Product/Product';
+import './home.css';
+
+class Home extends Component {
+    render() {
+        return (
+            <BrowserRouter>
+                <Fragment>
+                    {/* div disini adalah global component */}
+                    <div className="navbar">
+                        <li>
+                            {/* link to = a */}
+                            <Link to="/">BlogPost</Link>
+                        </li>
+                        <li>
+                            <Link to="/product">Product</Link>
+                        </li>
+                        <li>
+                            <Link to="/youtube">YoutubeComponent</Link>
+                        </li>
+
+                    </div>
+                    {/* exact disini untuk mensfesifikasikan bahwa hanya tanda / yang di panggil di root/home */}
+                    <Route path="/" exact component={BlogPost} />
+                    <Route path="/product" component={Product} />
+                    <Route path="/youtube" component={YoutubeComponent} />                </Fragment>
+            </BrowserRouter>
+        )
+    }
+}
+
+export default Home;
+```
