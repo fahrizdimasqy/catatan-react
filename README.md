@@ -1313,7 +1313,8 @@ class DetailPost extends Component {
                     <h2>Detail Post</h2>
                     <hr />
                     <div className="card mb-5">
-                        <img src="https://images3.alphacoders.com/221/thumb-1920-221297.png" alt="" className="card-img" width="60" />
+                        <img
+                            src="https://images3.alphacoders.com/221/thumb-1920-221297.png" alt="" className="card-img" width="60" />
                         <div className="card-body">
                             <h4 className="card-heading">{this.state.post.title}</h4>
                             <p className="card-text">{this.state.post.body}</p>
