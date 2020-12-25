@@ -1142,31 +1142,34 @@ class BlogPost extends Component {
     }
 
     postDataToApi = () => {
-        axios.post('http://localhost:3000/posts', this.state.formBlogPost).then((res) => {
-            console.log(res);
-            this.getPostAPI();
-            this.setState({
+        axios.post('http://localhost:3000/posts', this.state.formBlogPost)
+            .then((res) => {
+                console.log(res);
+                this.getPostAPI();
+                this.setState({
 
+                })
+            }, (err) => {
+                console.log('error:', err);
             })
-        }, (err) => {
-            console.log('error:', err);
-        })
     }
 
     putDataToApi = () => {
-        axios.put(`http://localhost:3000/posts/${this.state.formBlogPost.id}`, this.state.formBlogPost).then((result) => {
-            this.getPostAPI();
-            console.log(result);
-            this.setState({
-                formBlogPost: {
-                    id: 1,
-                    title: '',
-                    body: '',
-                    userId: 1
-                },
-            })
+        axios.put(`http://localhost:3000/posts/${this.state.formBlogPost.id}`,
+            this.state.formBlogPost).
+            then((result) => {
+                this.getPostAPI();
+                console.log(result);
+                this.setState({
+                    formBlogPost: {
+                        id: 1,
+                        title: '',
+                        body: '',
+                        userId: 1
+                    },
+                })
 
-        })
+            })
     }
 
     // method untuk menghapus data
@@ -1234,13 +1237,24 @@ class BlogPost extends Component {
                             <form>
                                 <div className="form-group">
                                     <label>Title</label>
-                                    <input type="text" className="form-control" name="title" onChange={this.handleFormChange} value={this.state.formBlogPost.title} />
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="title"
+                                        onChange={this.handleFormChange}
+                                        value={this.state.formBlogPost.title} />
                                 </div>
                                 <div className="form-group">
                                     <label>Content</label>
-                                    <textarea type="text" className="form-control" name="body" onChange={this.handleFormChange} value={this.state.formBlogPost.body} />
+                                    <textarea
+                                        type="text"
+                                        className="form-control"
+                                        name="body"
+                                        onChange={this.handleFormChange}
+                                        value={this.state.formBlogPost.body} />
                                 </div>
-                                <button className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+                                <button
+                                    className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
                             </form>
                         </div>
                     </div>
